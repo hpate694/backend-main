@@ -79,9 +79,21 @@ const updateDiet = asyncHandler(async (req, res) => {
   res.status(200).json(updatedDiet);
 });
 
+const deleteDiet = async (req, res) => {
+  try{
+    const dietToDelete = await Diet.findByIdAndDelete(req.body.id);
+    console.log(dietToDelete);
+    res.status(200).json("Diet deleted successfully");
+  }catch(err){
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
 module.exports = {
   addDiet,
   getDiet,
   searchDiet,
-  updateDiet
+  updateDiet,
+  deleteDiet
 };
