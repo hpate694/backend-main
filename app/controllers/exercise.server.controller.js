@@ -78,10 +78,29 @@ const updateExercise = asyncHandler(async (req, res) => {
   res.status(200).json(updatedExercise);
 });
 
+//Delete Exercise
+const deleteExercise = asyncHandler(async (req, res) => {
+  const exercise = await Exercise.findById(req.body.id);
+
+  if (!exercise) {
+    res.status(404).json('Exercise not found');
+  }
+
+  const deletedExercise = await Exercise.findOneAndDelete(
+    {
+      _id: `${req.body.id}`
+    },
+    req.body
+  );
+
+  res.status(200).json(deletedExercise);
+});
+
 
 module.exports = {
   addExercise,
   getExercise,
   searchExercise,
-  updateExercise
+  updateExercise,
+  deleteExercise
 };
