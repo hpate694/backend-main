@@ -24,13 +24,12 @@ const addDiet = asyncHandler(async (req, res) => {
   Diet.create(newDiet, (err, item) => {
     if (err) {
       console.log(err);
-      res.status(400);
-      throw new Error("Diet not created");
+      res.status(400).json("Diet not created");
     }
     else {
       //CAN ADD if --> in case item already exists...
       console.log(item);
-      res.status(200).json(newDiet);
+      res.status(201).json(newDiet);
 
     }
   });
@@ -50,8 +49,7 @@ const searchDiet = async (req, res) => {
   const regEx = new RegExp(req.params.dietName, 'i');
   const diet = await Diet.find({ name: { $regex: regEx } });
   if (!diet) {
-    res.status(404);
-    throw new Error('Diet not found with this name');
+    res.status(404).json('Diet not found with this name');
   }
   res.status(200).json(diet);
 }
@@ -62,8 +60,7 @@ const updateDiet = asyncHandler(async (req, res) => {
   const uDiet = await Diet.findById(req.body.id);
 
   if (!uDiet) {
-    res.status(400);
-    throw new Error(" Diet not found");
+    res.status(404).json('Diet not found');
   }
 
   const updatedDiet = await Diet.findOneAndUpdate(
