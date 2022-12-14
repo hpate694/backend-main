@@ -23,8 +23,7 @@ const addExercise = asyncHandler(async (req, res) => {
   Exercise.create(newExercise, (err, item) => {
     if (err) {
       console.log(err);
-      res.status(400);
-      throw new Error("Exercise not created");
+      res.status(400).json('Exercise not created');
     }
     else {
       //CAN ADD if --> in case item already exists...
@@ -49,8 +48,7 @@ const searchExercise = async (req, res) => {
   const regEx = new RegExp(req.params.exerciseName, 'i');
   const exercise = await Exercise.find({ name: { $regex: regEx } });
   if (!exercise) {
-    res.status(404);
-    throw new Error('Exercise not found with this name');
+    res.status(404).json('Exercise not found with this name');
   }
   res.status(200).json(exercise);
 }
@@ -60,8 +58,7 @@ const updateExercise = asyncHandler(async (req, res) => {
   const Fexercise = await Exercise.findById(req.body.id);
 
   if (!Fexercise) {
-    res.status(400);
-    throw new Error("Exercise not found");
+    res.status(404).json('Exercise not found');
   }
 
   const updatedExercise = await Exercise.findOneAndUpdate(
